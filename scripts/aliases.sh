@@ -1,0 +1,1 @@
+alias dj="uv run --env-file .env django-admin"
