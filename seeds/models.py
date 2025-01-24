@@ -19,7 +19,7 @@ class Crop(models.Model):
 
     """
 
-    name = models.CharField(max_length=100)
+    name = models.CharField(max_length=100, blank=False)
     binomial_1 = models.CharField(max_length=100)
     binomial_2 = models.CharField(max_length=100)
     created_at = models.DateTimeField(auto_now_add=True)
