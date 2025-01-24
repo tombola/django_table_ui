@@ -15,7 +15,7 @@ dev = [
 
 [tool.ruff.lint]
 select = ["ALL"]
-ignore = ["D212", "D203"]
+ignore = ["D212", "D203", "D102", "D105"]
 
 [tool.ruff]
 line-length = 120
