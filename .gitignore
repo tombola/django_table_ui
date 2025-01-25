@@ -1,4 +1,6 @@
 /tmp
+*.sqlite3
+.env*
 
 # Python-generated files
 __pycache__/
