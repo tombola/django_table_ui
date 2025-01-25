@@ -33,8 +33,9 @@ from seeds.models import CropVariety
 
 
 @click.command()
+@click.option("--force", is_flag=True, help="Skip validation and import all rows.")
 @click.argument("file_path", type=click.Path(exists=True))
-def import_crop_varieties(file_path:str) -> None:  # noqa: D103
+def import_crop_varieties(file_path:str, force:bool) -> None:  # noqa: D103
     with Path(file_path).open("r") as file:
         csv_content = file.read()
         csv_file = StringIO(csv_content)
@@ -54,7 +55,7 @@ def import_crop_varieties(file_path:str) -> None:  # noqa: D103
             for error in errors:
                 click.echo(click.style(error, fg='red'))
 
-            if not click.confirm("There were validation errors. Do you want to continue importing valid rows?"):
+            if not force and not click.confirm("There were validation errors. Do you want to continue importing valid rows?"):
                 return
 
         for data in validated_data:
