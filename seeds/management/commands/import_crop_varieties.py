@@ -35,27 +35,34 @@ from seeds.models import CropVariety
 @click.command()
 @click.option("--force", is_flag=True, help="Skip validation and import all rows.")
 @click.argument("file_path", type=click.Path(exists=True))
-def import_crop_varieties(file_path:str, force:bool) -> None:  # noqa: D103
+def import_crop_varieties(file_path: str, force: bool) -> None:  # noqa: D103
     with Path(file_path).open("r") as file:
         csv_content = file.read()
         csv_file = StringIO(csv_content)
         csv_reader = csv.DictReader(csv_file)
 
         validated_data: list[CropVarietySchema] = []
+        validated_skus = []
         errors = []
 
         for row in csv_reader:
             try:
+                # Check for duplicate SKUs
+                if row["sku"] in validated_skus:
+                    raise ValueError(f"Duplicate SKU found: {row['sku']}")
                 validated_data.append(CropVarietySchema(**row))
+                validated_skus.append(row["sku"])
             except ValueError as e:
                 errors.append(f"Row {csv_reader.line_num}: {str(e)}")
 
         if errors:
-            click.echo(click.style("Validation errors:", fg='red'))
+            click.echo(click.style("Validation errors:", fg="red"))
             for error in errors:
-                click.echo(click.style(error, fg='red'))
+                click.echo(click.style(error, fg="red"))
 
-            if not force and not click.confirm("There were validation errors. Do you want to continue importing valid rows?"):
+            if not force and not click.confirm(
+                "There were validation errors. Do you want to continue importing valid rows?"
+            ):
                 return
 
         for data in validated_data:

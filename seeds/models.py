@@ -19,7 +19,7 @@ class Crop(models.Model):
 
     """
 
-    name = models.CharField(max_length=100, blank=False)
+    name = models.CharField(max_length=100, blank=True)
     binomial_1 = models.CharField(max_length=100)
     binomial_2 = models.CharField(max_length=100)
     created_at = models.DateTimeField(auto_now_add=True)
@@ -49,6 +49,7 @@ class CropVariety(models.Model):
 
     """
 
+    sku = models.CharField(primary_key=True, max_length=10, blank=False)
     crop = models.ForeignKey(Crop, on_delete=models.SET_NULL, null=True)
     name = models.CharField(max_length=100)
     description = models.TextField()

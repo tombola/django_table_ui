@@ -1,6 +1,7 @@
 /tmp
 *.sqlite3
 .env*
+.vscode
 
 # Python-generated files
 __pycache__/
